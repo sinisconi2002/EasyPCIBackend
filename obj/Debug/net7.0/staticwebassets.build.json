@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "5mMkCZRACcyyrAlcISRK9D/Lt+a6cYR07z2bXPqw1mU=",
+  "Source": "EasyPCIBackend",
+  "BasePath": "_content/EasyPCIBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
