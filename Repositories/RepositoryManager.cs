@@ -8,6 +8,7 @@ namespace EasyPCIBackend.Repositories
     {
         private ApplicationDbContext _applicationContext;
         private IUserRepository _userRepository;
+        private ICardRepository _cardRepository;
 
         public RepositoryManager(ApplicationDbContext applicationContext)
         {
@@ -21,6 +22,16 @@ namespace EasyPCIBackend.Repositories
                 if (_userRepository == null)
                     _userRepository = new UserRepository(_applicationContext);
                 return _userRepository;
+            }
+        }
+
+        public ICardRepository Cards
+        {
+            get
+            {
+                if ( _cardRepository == null)
+                    _cardRepository = new CardRepository(_applicationContext);
+                return _cardRepository;
             }
         }
 

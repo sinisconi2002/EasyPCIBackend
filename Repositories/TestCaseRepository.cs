@@ -11,16 +11,10 @@ namespace EasyPCIBackend.Repositories
 
         public void CreateTestCase(TestCase TestCase) => Create(TestCase);
 
-        public TestCase GetTestCase(Guid TestCaseId) => FindByCondition(x => x.Id == TestCaseId).;
+        public TestCase GetTestCase(Guid TestCaseId) => FindByCondition(x => x.Id == TestCaseId, false).First();
 
-        public IEnumerable<TestCase> GetTestCases(bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<TestCase> GetTestCases(bool trackChanges) => FindAll(trackChanges).ToList();
 
-        public IEnumerable<TestCase> GetTestCasesByString(string search, bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<TestCase> GetTestCasesByString(string search, bool trackChanges) => FindByCondition(x => x.Name == search, trackChanges).ToList();
     }
 }

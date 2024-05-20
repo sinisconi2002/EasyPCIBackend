@@ -9,19 +9,10 @@ namespace EasyPCIBackend.Repositories
         public SSHConnnectionRepository(ApplicationDbContext ApplicationDbContext) : base(ApplicationDbContext) {}
         public SSHConnection GetSSHConnection(Guid connectionId) => FindByCondition(x => x.Id == connectionId, false).First();
 
-        public IEnumerable<SSHConnection> GetSSHConnections(bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<SSHConnection> GetSSHConnections(bool trackChanges) => FindAll(trackChanges).ToList();
 
-        public IEnumerable<SSHConnection> GetSSHConnectionsByString(string search, bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<SSHConnection> GetSSHConnectionsByString(string search, bool trackChanges) => FindByCondition(x => x.ServerAddress.Contains(search), trackChanges).ToList();
 
-        public void CreateSSHConnection(SSHConnection SSHConnection)
-        {
-            throw new NotImplementedException();
-        }
+        public void CreateSSHConnection(SSHConnection SSHConnection) => Create(SSHConnection);
     }
 }
