@@ -28,7 +28,7 @@ namespace EasyPCIBackend.Services
             return _repository.SSHConnections.GetSSHConnections(false).ToList();
         }
 
-        public async Task<List<SSHConnection>> GetConnectionsBySearch(string search)
+        List<SSHConnection> IConnectionService.GetConnectionsBySearch(string search)
         {
             return _repository.SSHConnections.GetSSHConnectionsByString(search, false).ToList();
         }

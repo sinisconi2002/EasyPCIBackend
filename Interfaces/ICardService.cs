@@ -6,7 +6,7 @@ namespace EasyPCIBackend.Interfaces
     {
         Task<List<Card>> GetCards();
         Task<Card> GetCard(Guid cardId);
-        Task<List<Card>> GetCardsBySearch(string search);
+        List<Card> GetCardsBySearch(string search);
         Task AddCard(Card card);
     }
 }
