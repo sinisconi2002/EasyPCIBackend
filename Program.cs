@@ -21,6 +21,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISigningService, SigningService>();
+builder.Services.AddScoped<ICardService, CardService>();
 
 var app = builder.Build();
 
