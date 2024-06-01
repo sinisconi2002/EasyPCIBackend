@@ -1,6 +1,6 @@
 ﻿using EasyPCIBackend.Models;
 
-namespace EasyPCIBackend.Interfaces.Repositories
+namespace EasyPCIBackend.Interfaces
 {
     public interface IConnectionService
     {

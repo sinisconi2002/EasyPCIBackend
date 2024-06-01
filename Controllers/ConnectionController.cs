@@ -1,4 +1,4 @@
-﻿using EasyPCIBackend.Interfaces.Repositories;
+﻿using EasyPCIBackend.Interfaces;
 using EasyPCIBackend.Models;
 using Microsoft.AspNetCore.Mvc;
 

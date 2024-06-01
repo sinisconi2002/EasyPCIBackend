@@ -24,7 +24,7 @@ namespace EasyPCIBackend.Controllers
             _signing = signing;
             _configuration = configuration;
 
-            //key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]));
+            key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]));
         }
 
         [HttpGet]
@@ -73,8 +73,7 @@ namespace EasyPCIBackend.Controllers
                     signingCredentials: creds);
 
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok();
-                //return Ok(new AuthenticatedResponse { Token = tokenString });
+                return Ok(new AuthenticatedResponse { Token = tokenString });
             }
             return Unauthorized();
         }
