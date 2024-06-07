@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace EasyPCIBackend.Repositories
 {
-    public class RepositoryBase<T> : IRepositoryManager<T> where T : class
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         protected ApplicationDbContext ApplicationDbContext;
         public RepositoryBase(ApplicationDbContext _ApplicationDbContext)
