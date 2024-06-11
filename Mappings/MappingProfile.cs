@@ -10,6 +10,7 @@ namespace EasyPCIBackend.Mappings
         {
             CreateMap<SSHConnection, SSHConnectionDto>();
             CreateMap<TestCase, TestCaseDto>();
+            CreateMap<Card, CardDto>();
         }
     }
 }
