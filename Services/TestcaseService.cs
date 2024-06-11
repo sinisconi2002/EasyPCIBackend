@@ -5,24 +5,32 @@ namespace EasyPCIBackend.Services
 {
     public class TestcaseService : ITestcaseService
     {
-        public Task AddTestcase(TestCase testcase)
+        private readonly IRepositoryManager _repository;
+        public TestcaseService(IRepositoryManager repository)
         {
-            throw new NotImplementedException();
+            _repository = repository;
         }
 
-        public Task<TestCase> GetTestcase(Guid testcaseId)
+        public async Task AddTestcase(TestCase testcase)
         {
-            throw new NotImplementedException();
+            testcase.Id = Guid.NewGuid();
+            _repository.TestCases.CreateTestCase(testcase);
+            await _repository.Save();
         }
 
-        public Task<List<TestCase>> GetTestcases()
+        public async Task<TestCase> GetTestcase(Guid testcaseId)
         {
-            throw new NotImplementedException();
+            return _repository.TestCases.GetTestCase(testcaseId);
+        }
+
+        public async Task<List<TestCase>> GetTestcases()
+        {
+            return _repository.TestCases.GetTestCases(false).ToList();
         }
 
         public List<TestCase> GetTestcasesBySearch(string search)
         {
-            throw new NotImplementedException();
+            return _repository.TestCases.GetTestCasesByString(search, false).ToList();
         }
     }
 }
