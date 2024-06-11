@@ -4,7 +4,7 @@ namespace EasyPCIBackend.Interfaces
 {
     public interface ISSHConnector
     {
-        public String GetCore(SSHConnection connection);
-        public String UploadCore(SSHConnection connectiion, string coreName);
+        public String GetCore(SSHConnection connection, string process);
+        public Task UploadCore(SSHConnection connectiion, string wantedPID);
     }
 }
