@@ -48,9 +48,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISigningService, SigningService>();
 builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<IConnectionService, ConnectionService>();
+builder.Services.AddScoped<ISSHConnector, SSHConnector>();
 
 builder.Services.AddCors(x => x.AddPolicy("AllowAll", p =>
 { p.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials(); }));
+
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 var app = builder.Build();
 

@@ -11,6 +11,12 @@ namespace EasyPCIBackend.Services
 {
     public class SSHConnector : ISSHConnector
     {
+        private readonly IConfiguration _configuration;
+
+        public SSHConnector(IConfiguration configuration)
+        {
+              _configuration = configuration;
+        }
         public string GetCore(SSHConnection connection, string process)
         {
             string wantedPID = "";
@@ -62,8 +68,9 @@ namespace EasyPCIBackend.Services
             return wantedPID;
         }
 
-        public async Task UploadCore(SSHConnection connection, string wantedPID)
+        public async Task<string> UploadCore(SSHConnection connection, string wantedPID)
         {
+            string result_string = "";
             using (var client = new SftpClient(connection.ServerAddress, connection.Username, connection.Password))
             {
                 client.Connect();
@@ -72,16 +79,16 @@ namespace EasyPCIBackend.Services
                 {
                     client.DownloadFile("/home/" + connection.Username + "/core." + wantedPID, memoryStream);
 
-                    string connectionString = "DefaultEndpointsProtocol=https;AccountName=easypcistorage;AccountKey=8GPNRXotIoohdKiFCJ47exJ1P9YpPy5dNQ8pKCa2owxcfMtAc3dkD0qUrjQRAABcsj0+SkodK+BN+AStRdpPww==;EndpointSuffix=core.windows.net";
-                    var container = new BlobContainerClient(connectionString, "coredumps");
+                    var container = new BlobContainerClient(_configuration.GetValue<string>("ConnectionStrings:AzureStorage"), "coredumps");
                     var blob = container.GetBlobClient("core." + wantedPID);
 
                     memoryStream.Position = 0;
                     await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots);
                     await blob.UploadAsync(memoryStream);
-
+                    result_string = blob.Uri.ToString();
                 }
             }
+            return result_string;
         }
     }
 }
