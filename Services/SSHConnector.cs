@@ -2,9 +2,7 @@
 using Azure.Storage.Blobs;
 using EasyPCIBackend.Interfaces;
 using EasyPCIBackend.Models;
-using Microsoft.Extensions.Hosting;
 using Renci.SshNet;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace EasyPCIBackend.Services
