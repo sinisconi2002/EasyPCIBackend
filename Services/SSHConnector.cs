@@ -85,6 +85,8 @@ namespace EasyPCIBackend.Services
                     await blob.UploadAsync(memoryStream);
                     result_string = blob.Uri.ToString();
                 }
+
+                client.Disconnect();
             }
             return result_string;
         }
