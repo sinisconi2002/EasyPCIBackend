@@ -1,5 +1,6 @@
 using EasyPCIBackend.Data;
 using EasyPCIBackend.Interfaces;
+using EasyPCIBackend.Mappings;
 using EasyPCIBackend.Repositories;
 using EasyPCIBackend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -49,11 +50,15 @@ builder.Services.AddScoped<ISigningService, SigningService>();
 builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<IConnectionService, ConnectionService>();
 builder.Services.AddScoped<ISSHConnector, SSHConnector>();
+builder.Services.AddScoped<ITestcaseService, TestcaseService>();
+builder.Services.AddScoped<ITestService, TestService>();
 
 builder.Services.AddCors(x => x.AddPolicy("AllowAll", p =>
 { p.SetIsOriginAllowed(_ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials(); }));
 
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

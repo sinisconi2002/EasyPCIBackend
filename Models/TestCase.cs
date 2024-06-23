@@ -2,9 +2,10 @@
 {
     public class TestCase
     {
-        public Guid Id;
-        public string Name;
-        public string Description;
-        public Guid Card;
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description {  get; set; }
+        public Guid Card { get; set; }
+        public string Process {  get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace EasyPCIBackend.Controllers
         }
 
         [HttpPost("add_card")]
-        public async Task<IActionResult> AddAnnouncement(Card card)
+        public async Task<IActionResult> AddCard(Card card)
         {
             await _service.AddCard(card);
             return Ok();

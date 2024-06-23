@@ -11,15 +11,6 @@ namespace EasyPCIBackend.Services
         {
             _repository = repository;
         }
-        public User GetUser(Guid userId)
-        {
-            return _repository.Users.GetUser(userId);
-        }
-
-        public List<User> GetUsers()
-        {
-            return _repository.Users.GetUsers(false).ToList();
-        }
 
         public User GetUserByString(string username)
         {

@@ -15,6 +15,7 @@ namespace EasyPCIBackend.Repositories
 
         public IEnumerable<TestCase> GetTestCases(bool trackChanges) => FindAll(trackChanges).ToList();
 
-        public IEnumerable<TestCase> GetTestCasesByString(string search, bool trackChanges) => FindByCondition(x => x.Name == search, trackChanges).ToList();
+        public IEnumerable<TestCase> GetTestCasesByString(string search, bool trackChanges) => FindByCondition(x => x.Name.ToLower() == search, trackChanges).ToList();
+
     }
 }

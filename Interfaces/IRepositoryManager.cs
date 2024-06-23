@@ -11,7 +11,6 @@ namespace EasyPCIBackend.Interfaces
 
         ISSHConnectionRepository SSHConnections { get; }
         ITestCaseRepository TestCases { get; }
-        ITestRepository Tests { get; }
         ITestResultRepository TestResults { get; }
  
         Task Save();

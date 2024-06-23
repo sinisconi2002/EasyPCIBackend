@@ -1,13 +1,17 @@
-﻿using EasyPCIBackend.Interfaces;
+﻿using AutoMapper;
+using EasyPCIBackend.Interfaces;
 using EasyPCIBackend.Models;
+using EasyPCIBackend.Models.Dtos;
 
 namespace EasyPCIBackend.Services
 {
     public class TestcaseService : ITestcaseService
     {
         private readonly IRepositoryManager _repository;
-        public TestcaseService(IRepositoryManager repository)
+        private readonly IMapper _mapper;
+        public TestcaseService(IMapper mapper, IRepositoryManager repository)
         {
+            _mapper = mapper;
             _repository = repository;
         }
 
@@ -18,9 +22,23 @@ namespace EasyPCIBackend.Services
             await _repository.Save();
         }
 
-        public async Task<TestCase> GetTestcase(Guid testcaseId)
+        public TestCaseDto GetTestcase(Guid testcaseId)
         {
-            return _repository.TestCases.GetTestCase(testcaseId);
+            var initialTestcase = _repository.TestCases.GetTestCase(testcaseId);
+            var card = _repository.Cards.GetCard(initialTestcase.Card);
+            var result = _mapper.Map<TestCaseDto>(initialTestcase);
+            result.Card = _mapper.Map<CardDto>(card);
+
+            return result;
+        }
+
+        public TestCaseCreatorDto GetTestcaseCreator()
+        {
+            var _cards = _repository.Cards.GetCards(false);
+            TestCaseCreatorDto testCaseCreatorDto = new TestCaseCreatorDto();
+            testCaseCreatorDto.cards = _mapper.Map<List<CardDto>>(_cards);
+
+            return testCaseCreatorDto;
         }
 
         public async Task<List<TestCase>> GetTestcases()
@@ -30,7 +48,7 @@ namespace EasyPCIBackend.Services
 
         public List<TestCase> GetTestcasesBySearch(string search)
         {
-            return _repository.TestCases.GetTestCasesByString(search, false).ToList();
+            return _repository.TestCases.GetTestCasesByString(search.ToLower(), false).ToList();
         }
     }
 }

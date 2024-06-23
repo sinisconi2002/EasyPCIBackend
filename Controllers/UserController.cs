@@ -27,20 +27,6 @@ namespace EasyPCIBackend.Controllers
             key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]));
         }
 
-        [HttpGet]
-        public IActionResult GetUsers()
-        {
-            var _users = _service.GetUsers();
-            return Ok(_users);
-        }
-
-        [HttpGet("{userId}")]
-        public IActionResult GetUser(Guid userId)
-        {
-            var _user = _service.GetUser(userId);
-            return Ok(_user);
-        }
-
         [HttpPost("add_user")]
         public async Task<IActionResult> AddUser(User user)
         {

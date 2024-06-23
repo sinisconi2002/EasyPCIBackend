@@ -21,7 +21,7 @@ namespace EasyPCIBackend.Controllers
             return Ok(_testcases);
         }
 
-        [HttpGet("{connectionId}")]
+        [HttpGet("{testcaseId}")]
         public IActionResult GetTestcase(Guid testcaseId)
         {
             var _testcase = _service.GetTestcase(testcaseId);
@@ -29,9 +29,9 @@ namespace EasyPCIBackend.Controllers
         }
 
         [HttpPost("add_testcase")]
-        public async Task<IActionResult> AddTestcase(TestCase connection)
+        public async Task<IActionResult> AddTestcase(TestCase testCase)
         {
-            await _service.AddTestcase(connection);
+            await _service.AddTestcase(testCase);
             return Ok();
         }
 
@@ -40,6 +40,13 @@ namespace EasyPCIBackend.Controllers
         {
             var _testcases = _service.GetTestcasesBySearch(search);
             return _testcases.Count != 0 ? Ok(_testcases) : Ok();
+        }
+
+        [HttpGet("testCaseCreator")]
+        public ActionResult GetTestcaseCreator()
+        {
+            var _testcaseCreator = _service.GetTestcaseCreator();
+            return Ok(_testcaseCreator);
         }
     }
 }

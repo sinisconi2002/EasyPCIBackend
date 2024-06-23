@@ -8,5 +8,6 @@
         public Guid Remote {  get; set; }
         public string Result { get; set; }
         public string LinkToCore { get; set; }
+        public string Tester { get; set; }
     }
 }

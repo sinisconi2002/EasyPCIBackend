@@ -2,6 +2,6 @@
 {
     public class TestCaseCreatorDto
     {
-        List<CardDto> cards;
+        public List<CardDto> cards { get; set; }
     }
 }

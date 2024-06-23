@@ -1,4 +1,5 @@
 ﻿using EasyPCIBackend.Models;
+using EasyPCIBackend.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace EasyPCIBackend.Data
@@ -10,21 +11,6 @@ namespace EasyPCIBackend.Data
         public DbSet<SSHConnection> SSHConnections { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<TestCase> TestCases { get; set; }   
-        public DbSet<Test> Tests { get; set; }
         public DbSet<TestResult> TestResults { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // Explicitly configure the primary key
-            modelBuilder.Entity<TestCase>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Name).IsRequired();
-                entity.Property(e => e.Description);
-                entity.Property(e => e.Card).IsRequired();
-            });
-        }
     }
 }

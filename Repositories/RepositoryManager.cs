@@ -11,7 +11,6 @@ namespace EasyPCIBackend.Repositories
         private ICardRepository _cardRepository;
         private ISSHConnectionRepository _sshConnectionRepository;
         private ITestCaseRepository _testCaseRepository;
-        private ITestRepository _testRepository;
         private ITestResultRepository _testResultRepository;
 
         public RepositoryManager(ApplicationDbContext applicationContext)
@@ -56,16 +55,6 @@ namespace EasyPCIBackend.Repositories
                 if (_testCaseRepository == null)
                     _testCaseRepository = new TestCaseRepository(_applicationContext);
                 return _testCaseRepository;
-            }
-        }
-
-        public ITestRepository Tests
-        {
-            get
-            {
-                if (_testRepository == null)
-                    _testRepository = new TestRepository(_applicationContext);
-                return _testRepository;
             }
         }
 

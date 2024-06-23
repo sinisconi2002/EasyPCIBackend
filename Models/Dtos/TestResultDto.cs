@@ -7,6 +7,7 @@
         public TestCaseDto TestCase { get; set; }
         public SSHConnectionDto Remote { get; set; }
         public string Result { get; set; }
+        public string Tester { get; set; }
         public string LinkToCore { get; set; }
     }
 }

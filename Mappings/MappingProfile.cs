@@ -9,8 +9,9 @@ namespace EasyPCIBackend.Mappings
         public MappingProfile() 
         {
             CreateMap<SSHConnection, SSHConnectionDto>();
-            CreateMap<TestCase, TestCaseDto>();
+            CreateMap<TestCase, TestCaseDto>().ForMember(dest => dest.Card, opt => opt.Ignore());
             CreateMap<Card, CardDto>();
+            CreateMap<Test, TestResult>();
         }
     }
 }

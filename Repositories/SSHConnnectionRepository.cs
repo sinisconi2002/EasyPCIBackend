@@ -11,7 +11,7 @@ namespace EasyPCIBackend.Repositories
 
         public IEnumerable<SSHConnection> GetSSHConnections(bool trackChanges) => FindAll(trackChanges).ToList();
 
-        public IEnumerable<SSHConnection> GetSSHConnectionsByString(string search, bool trackChanges) => FindByCondition(x => x.ServerAddress.Contains(search), trackChanges).ToList();
+        public IEnumerable<SSHConnection> GetSSHConnectionsByString(string search, bool trackChanges) => FindByCondition(x => x.Name.ToLower().Contains(search), trackChanges).ToList();
 
         public void CreateSSHConnection(SSHConnection SSHConnection) => Create(SSHConnection);
     }
