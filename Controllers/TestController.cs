@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.S3;
+using AutoMapper;
 using Azure.Storage.Blobs;
 using EasyPCIBackend.Interfaces;
 using EasyPCIBackend.Models;
@@ -62,19 +63,22 @@ namespace EasyPCIBackend.Controllers
         [HttpGet("download-core-dump")]
         public async Task<IActionResult> DownloadCoreDump([FromQuery] string blobName)
         {
-            BlobServiceClient blobServiceClient = new BlobServiceClient(_configuration.GetValue<string>("ConnectionStrings:AzureStorage"));
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("coredumps");
-            BlobClient blobClient = containerClient.GetBlobClient(blobName);
+            var s3Client = new AmazonS3Client(
+                _configuration.GetValue<string>("R2:AccessKey"),
+                _configuration.GetValue<string>("R2:SecretKey"),
+                new AmazonS3Config
+                {
+                    ServiceURL = _configuration.GetValue<string>("R2:Endpoint"),
+                    ForcePathStyle = true
+                });
 
-
-            var blobDownloadInfo = await blobClient.DownloadAsync();
+            var response = await s3Client.GetObjectAsync("easypci-coredumps", blobName);
 
             MemoryStream memoryStream = new MemoryStream();
-            await blobDownloadInfo.Value.Content.CopyToAsync(memoryStream);
+            await response.ResponseStream.CopyToAsync(memoryStream);
             memoryStream.Position = 0;
 
             return File(memoryStream, "application/octet-stream", blobName);
-            
         }
     }
 }

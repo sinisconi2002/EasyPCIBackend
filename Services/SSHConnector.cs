@@ -4,6 +4,8 @@ using EasyPCIBackend.Interfaces;
 using EasyPCIBackend.Models;
 using Renci.SshNet;
 using System.Text.RegularExpressions;
+using Amazon.S3;
+using Amazon.S3.Model;
 
 namespace EasyPCIBackend.Services
 {
@@ -61,13 +63,30 @@ namespace EasyPCIBackend.Services
                 using (var memoryStream = new MemoryStream())
                 {
                     client.DownloadFile("/home/" + connection.Username + "/core." + wantedPID, memoryStream);
-                    var container = new BlobContainerClient(_configuration.GetValue<string>("ConnectionStrings:AzureStorage"), "coredumps");
-                    string blobName = $"core.{wantedPID}-{DateTime.UtcNow.ToString("yyyyMMddHHmmssfff")}";
-                    var blob = container.GetBlobClient(blobName);
-                    memoryStream.Position = 0;
-                    await blob.UploadAsync(memoryStream);
 
-                    result_string = blob.Name;
+                    var s3Client = new AmazonS3Client(
+                        _configuration.GetValue<string>("R2:AccessKey"),
+                        _configuration.GetValue<string>("R2:SecretKey"),
+                        new AmazonS3Config
+                        {
+                            ServiceURL = _configuration.GetValue<string>("R2:Endpoint"),
+                            ForcePathStyle = true
+                        });
+
+                    string blobName = $"core.{wantedPID}-{DateTime.UtcNow.ToString("yyyyMMddHHmmssfff")}";
+                    memoryStream.Position = 0;
+
+                    var putRequest = new PutObjectRequest
+                    {
+                        BucketName = "easypci-coredumps",
+                        Key = blobName,
+                        InputStream = memoryStream,
+                        ContentType = "application/octet-stream"
+                    };
+
+                    await s3Client.PutObjectAsync(putRequest);
+
+                    result_string = blobName;
 
                     client.DeleteFile("/home/" + connection.Username + "/core." + wantedPID);
                 }
