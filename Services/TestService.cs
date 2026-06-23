@@ -74,15 +74,16 @@ namespace EasyPCIBackend.Services
             string processId = _connector.GetCore(remote, testCase.Process);
             string coreName = await _connector.UploadCore(remote, processId);
 
-
             TestResult result = _mapper.Map<TestResult>(test);
             result.LinkToCore = coreName;
 
             var client = new RestClient(_configuration.GetValue<string>("ConnectionStrings:Analyzer"));
-            var request = new RestRequest("analyze", Method.Post)
+            
+            string endpoint = testCase.Engine == TestCase.DetectionEngine.Modern ? "scan/modern" : "scan/classic";
+            
+            var request = new RestRequest(endpoint, Method.Post)
                               .AddHeader("Content-Type", "application/json");
 
-        
             var body = new
             {
                 cardData,
@@ -93,10 +94,23 @@ namespace EasyPCIBackend.Services
 
             var response = await client.ExecuteAsync(request);
             var html = "<ul>";
-            foreach (var matches in JsonConvert.DeserializeObject<List<string>>(response.Content))
+            
+            if (response.IsSuccessful && !string.IsNullOrEmpty(response.Content))
             {
-                html += $"<li>{matches}</li>";
+                var matches = JsonConvert.DeserializeObject<List<string>>(response.Content);
+                if (matches != null)
+                {
+                    foreach (var match in matches)
+                    {
+                        html += $"<li>{match}</li>";
+                    }
+                }
             }
+            else
+            {
+                html += $"<li>ERROR: Analyzer returned {(int)response.StatusCode} - {response.ErrorMessage ?? "Unknown"}</li>";
+            }
+            
             html += "</ul>";
             result.Result = html;
             result.Id = Guid.NewGuid();
